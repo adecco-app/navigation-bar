@@ -12,9 +12,9 @@
     "android/build.gradle",
     "dist/",
     "ios/Plugin/",
-    "HugotomaziCapacitorNavigationBar.podspec"
+    "CapacitorNavigationBar.podspec"
   ],
-  "author": "hugotomazi",
+  "author": "adecco",
   "license": "MIT",
   "repository": {
     "type": "git",
