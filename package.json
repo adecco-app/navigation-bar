@@ -1,5 +1,5 @@
 {
-  "name": "@hugotomazi/capacitor-navigation-bar",
+  "name": "capacitor-navigation-bar",
   "version": "4.0.1",
   "description": "Capacitor Plugin for Navigation Bar",
   "main": "dist/plugin.cjs.js",
@@ -18,10 +18,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hugotomazi/navigation-bar.git"
+    "url": "git+https://github.com/adecco-app/navigation-bar"
   },
   "bugs": {
-    "url": "https://github.com/hugotomazi/navigation-bar/issues"
+    "url": "https://github.com/adecco-app/navigation-bar/issues"
   },
   "keywords": [
     "capacitor",
