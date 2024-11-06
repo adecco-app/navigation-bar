@@ -1,5 +1,5 @@
 {
-  "name": "capacitor-navigation-bar",
+  "name": "@adecco/capacitor-navigation-bar",
   "version": "4.0.1",
   "description": "Capacitor Plugin for Navigation Bar",
   "main": "dist/plugin.cjs.js",
