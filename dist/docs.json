@@ -184,7 +184,7 @@
         "parameters": [],
         "returns": "Promise<PluginListenerHandle>",
         "tags": [],
-        "docs": "",
+        "docs": "Detects Android 3-button navigation bar and add bottom padding to the webview.",
         "complexTypes": [
           "PluginListenerHandle"
         ],

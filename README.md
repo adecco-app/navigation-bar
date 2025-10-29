@@ -190,6 +190,8 @@ Event fired after navigation bar color is changed
 adjustPaddingForNavigationBar() => Promise<PluginListenerHandle>
 ```
 
+Detects Android 3-button navigation bar and add bottom padding to the webview.
+
 **Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
 --------------------
