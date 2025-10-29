@@ -1,4 +1,4 @@
-import { WebPlugin } from '@capacitor/core';
+import { PluginListenerHandle, WebPlugin } from '@capacitor/core';
 import type { NavigationBarPlugin } from './definitions';
 
 export class NavigationBarWeb extends WebPlugin implements NavigationBarPlugin {
@@ -37,4 +37,9 @@ export class NavigationBarWeb extends WebPlugin implements NavigationBarPlugin {
     })
   }
 
+  async adjustPaddingForNavigationBar(): Promise<PluginListenerHandle> {
+    return new Promise<PluginListenerHandle>((resolve) => {
+      resolve({} as PluginListenerHandle)
+    })
+  }
 }

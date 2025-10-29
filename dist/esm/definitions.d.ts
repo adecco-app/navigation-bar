@@ -48,6 +48,10 @@ export interface NavigationBarPlugin {
     addListener(event: NavigationBarPluginEvents.COLOR_CHANGE, listenerFunc: (returnObject: {
         color: string;
     }) => void): Promise<PluginListenerHandle>;
+     /**
+     * Detects Android 3-button navigation bar and add bottom padding to the webview.
+     */
+    adjustPaddingForNavigationBar(): Promise<PluginListenerHandle>;
 }
 export interface ColorParameters {
     /**

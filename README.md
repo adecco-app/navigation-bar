@@ -52,9 +52,10 @@ No configuration required for this plugin.
 * [`setColor(...)`](#setcolor)
 * [`setTransparency(...)`](#settransparency)
 * [`getColor()`](#getcolor)
-* [`addListener(...)`](#addlistener)
-* [`addListener(...)`](#addlistener)
-* [`addListener(...)`](#addlistener)
+* [`addListener(NavigationBarPluginEvents.SHOW, ...)`](#addlistenernavigationbarplugineventsshow)
+* [`addListener(NavigationBarPluginEvents.HIDE, ...)`](#addlistenernavigationbarplugineventshide)
+* [`addListener(NavigationBarPluginEvents.COLOR_CHANGE, ...)`](#addlistenernavigationbarplugineventscolor_change)
+* [`adjustPaddingForNavigationBar()`](#adjustpaddingfornavigationbar)
 * [Interfaces](#interfaces)
 * [Enums](#enums)
 
@@ -129,7 +130,7 @@ Gets the current color of the navigation bar in Hexadecimal.
 --------------------
 
 
-### addListener(...)
+### addListener(NavigationBarPluginEvents.SHOW, ...)
 
 ```typescript
 addListener(event: NavigationBarPluginEvents.SHOW, listenerFunc: () => void) => Promise<PluginListenerHandle>
@@ -147,7 +148,7 @@ Event fired after navigation bar is displayed
 --------------------
 
 
-### addListener(...)
+### addListener(NavigationBarPluginEvents.HIDE, ...)
 
 ```typescript
 addListener(event: NavigationBarPluginEvents.HIDE, listenerFunc: () => void) => Promise<PluginListenerHandle>
@@ -165,7 +166,7 @@ Event fired after navigation bar is hidden
 --------------------
 
 
-### addListener(...)
+### addListener(NavigationBarPluginEvents.COLOR_CHANGE, ...)
 
 ```typescript
 addListener(event: NavigationBarPluginEvents.COLOR_CHANGE, listenerFunc: (returnObject: { color: string; }) => void) => Promise<PluginListenerHandle>
@@ -177,6 +178,17 @@ Event fired after navigation bar color is changed
 | ------------------ | -------------------------------------------------------------------------------------------- | ----------- |
 | **`event`**        | <code><a href="#navigationbarpluginevents">NavigationBarPluginEvents.COLOR_CHANGE</a></code> | The event   |
 | **`listenerFunc`** | <code>(returnObject: { color: string; }) =&gt; void</code>                                   | Callback    |
+
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
+
+--------------------
+
+
+### adjustPaddingForNavigationBar()
+
+```typescript
+adjustPaddingForNavigationBar() => Promise<PluginListenerHandle>
+```
 
 **Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 

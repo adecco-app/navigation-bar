@@ -177,6 +177,18 @@
           "NavigationBarPluginEvents"
         ],
         "slug": "addlistenernavigationbarplugineventscolor_change"
+      },
+      {
+        "name": "adjustPaddingForNavigationBar",
+        "signature": "() => Promise<PluginListenerHandle>",
+        "parameters": [],
+        "returns": "Promise<PluginListenerHandle>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [
+          "PluginListenerHandle"
+        ],
+        "slug": "adjustpaddingfornavigationbar"
       }
     ],
     "properties": []

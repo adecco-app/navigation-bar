@@ -54,6 +54,11 @@ class NavigationBarWeb extends core.WebPlugin {
             resolve({ color: '#FFFFFF' });
         });
     }
+    async adjustPaddingForNavigationBar() {
+        return new Promise((resolve) => {
+            resolve({});
+        });
+    }
 }
 
 var web = /*#__PURE__*/Object.freeze({

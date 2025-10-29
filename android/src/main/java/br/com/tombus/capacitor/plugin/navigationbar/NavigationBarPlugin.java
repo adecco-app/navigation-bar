@@ -2,9 +2,14 @@ package br.com.tombus.capacitor.plugin.navigationbar;
 
 import android.graphics.Color;
 import android.os.Build;
+import android.provider.Settings;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-
+import androidx.annotation.NonNull;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
@@ -22,101 +27,102 @@ public class NavigationBarPlugin extends Plugin {
     private NavigationBar implementation = new NavigationBar();
     private Boolean isTransparent = false;
     private int currentColor = Color.BLACK;
+    
     @PluginMethod
     public void hide(PluginCall call) {
         this.getActivity().runOnUiThread(() -> {
-            Window window = getActivity().getWindow();
-            WindowInsetsControllerCompat windowInsetsControllerCompat = WindowCompat.getInsetsController(window, window.getDecorView());
-            windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.navigationBars());
+                Window window = getActivity().getWindow();
+                WindowInsetsControllerCompat windowInsetsControllerCompat = WindowCompat.getInsetsController(window, window.getDecorView());
+                windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.navigationBars());
 
-            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            notifyListeners("onHide", new JSObject());
-            call.resolve();
-        });
+                window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                notifyListeners("onHide", new JSObject());
+                call.resolve();
+            });
     }
 
     @PluginMethod
     public void show(PluginCall call) {
         this.getActivity().runOnUiThread(() -> {
-            Window window = getActivity().getWindow();
-            WindowInsetsControllerCompat windowInsetsControllerCompat = WindowCompat.getInsetsController(window, window.getDecorView());
-            windowInsetsControllerCompat.show(WindowInsetsCompat.Type.navigationBars());
+                Window window = getActivity().getWindow();
+                WindowInsetsControllerCompat windowInsetsControllerCompat = WindowCompat.getInsetsController(window, window.getDecorView());
+                windowInsetsControllerCompat.show(WindowInsetsCompat.Type.navigationBars());
 
-            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-            notifyListeners("onShow", new JSObject());
-            call.resolve();
-        });
+                notifyListeners("onShow", new JSObject());
+                call.resolve();
+            });
     }
 
     @PluginMethod
     public void setTransparency(PluginCall call) {
         this.getActivity().runOnUiThread(() -> {
-            Boolean isTransparent = call.getBoolean("isTransparent");
-            Window window = getActivity().getWindow();
+                Boolean isTransparent = call.getBoolean("isTransparent");
+                Window window = getActivity().getWindow();
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 if(isTransparent) {
-                    WindowCompat.setDecorFitsSystemWindows(window, false);
-                    window.setNavigationBarColor(Color.TRANSPARENT);
-                    window.setNavigationBarContrastEnforced(false);
+                        WindowCompat.setDecorFitsSystemWindows(window, false);
+                        window.setNavigationBarColor(Color.TRANSPARENT);
+                        window.setNavigationBarContrastEnforced(false);
+                    } else {
+                        WindowCompat.setDecorFitsSystemWindows(window, true);
+                        window.setNavigationBarColor(this.currentColor);
+                        window.setNavigationBarContrastEnforced(true);
+                    }
                 } else {
-                    WindowCompat.setDecorFitsSystemWindows(window, true);
-                    window.setNavigationBarColor(this.currentColor);
-                    window.setNavigationBarContrastEnforced(true);
-                }
-            } else {
                 if(isTransparent) {
-                    window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-                } else {
-                    window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+                        window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+                    } else {
+                        window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+                    }
                 }
-            }
-            this.isTransparent = isTransparent;
-            call.resolve();
-        });
+                this.isTransparent = isTransparent;
+                call.resolve();
+            });
     }
 
     @PluginMethod
     public void setColor(PluginCall call) {
         this.getActivity().runOnUiThread(() -> {
-            String color = call.getString("color");
-            Boolean darkButtons = call.getBoolean("darkButtons");
+                String color = call.getString("color");
+                Boolean darkButtons = call.getBoolean("darkButtons");
 
             if(color == null || color.isEmpty()) {
-                color = "#FFFFFF";
-            }
+                    color = "#FFFFFF";
+                }
 
             if(!this.validateHexColor(color)) {
-                call.reject("Invalid Hexadecimal color");
-                return;
-            }
+                    call.reject("Invalid Hexadecimal color");
+                    return;
+                }
 
             if(darkButtons == null) {
-                darkButtons = false;
-            }
+                    darkButtons = false;
+                }
 
-            Window window = getActivity().getWindow();
-            WindowInsetsControllerCompat windowInsetsControllerCompat = WindowCompat.getInsetsController(window, window.getDecorView());
-            windowInsetsControllerCompat.setAppearanceLightNavigationBars(darkButtons);
+                Window window = getActivity().getWindow();
+                WindowInsetsControllerCompat windowInsetsControllerCompat = WindowCompat.getInsetsController(window, window.getDecorView());
+                windowInsetsControllerCompat.setAppearanceLightNavigationBars(darkButtons);
 
-            this.currentColor = Color.parseColor(color);
+                this.currentColor = Color.parseColor(color);
             if(Build.VERSION.SDK_INT < Build.VERSION_CODES.R || !this.isTransparent) {
-                window.setNavigationBarColor(this.currentColor);
-            }
+                    window.setNavigationBarColor(this.currentColor);
+                }
 
-            String newColor = String.format("#%08X", (0xFFFFFFFF & this.currentColor));
+                String newColor = String.format("#%08X", (0xFFFFFFFF & this.currentColor));
 
             if(newColor.contains("#FF")) {
                 newColor = newColor.replace("#FF", "#");
-            }
+                }
 
-            JSObject ret = new JSObject();
-            ret.put("color", newColor);
-            notifyListeners("onColorChange", ret);
+                JSObject ret = new JSObject();
+                ret.put("color", newColor);
+                notifyListeners("onColorChange", ret);
 
-            call.resolve();
-        });
+                call.resolve();
+            });
     }
 
     /*
@@ -130,18 +136,74 @@ public class NavigationBarPlugin extends Plugin {
         Pattern hexPattern = Pattern.compile("^#([A-Fa-f0-9]{6})$|^#([A-Fa-f0-9]{8})$");
         return hexPattern.matcher(color).matches();
     }
+
     @PluginMethod
     public void getColor(PluginCall call) {
         this.getActivity().runOnUiThread(() -> {
-            String color = String.format("#%08X", (0xFFFFFFFF & this.currentColor));
+                String color = String.format("#%08X", (0xFFFFFFFF & this.currentColor));
 
             if(color.contains("#FF")) {
-                color = color.replace("#FF", "#");
-            }
+                    color = color.replace("#FF", "#");
+                }
 
-            JSObject colorObject = new JSObject();
-            colorObject.put("color", color);
-            call.resolve(colorObject);
-        });
+                JSObject colorObject = new JSObject();
+                colorObject.put("color", color);
+                call.resolve(colorObject);
+            });
+    }
+
+    private void applyInsets() {
+        this.getActivity()
+            .runOnUiThread(() -> {
+                View view = this.getBridge().getWebView();
+                // Get parent view
+                ViewGroup parent = (ViewGroup) view.getParent();
+                // Set insets
+                WindowInsetsCompat currentInsets = ViewCompat.getRootWindowInsets(view);
+
+                if (currentInsets != null) {
+                    Insets systemBarsInsets = currentInsets.getInsets(
+                        WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout()
+                    );
+                    Insets imeInsets = currentInsets.getInsets(WindowInsetsCompat.Type.ime());
+                    boolean keyboardVisible = currentInsets.isVisible(WindowInsetsCompat.Type.ime());
+
+                    ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+
+                    mlp.bottomMargin = keyboardVisible ? imeInsets.bottom : systemBarsInsets.bottom;
+                    mlp.topMargin = 0;
+
+                    view.setLayoutParams(mlp);
+                }
+                // Set listener
+                ViewCompat.setOnApplyWindowInsetsListener(
+                    view,
+                    (v, windowInsets) -> {
+                        // Retrieve system bars insets (for status/navigation bars)
+                        Insets systemBarsInsets = windowInsets.getInsets(
+                            WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout()
+                        );
+                        // Retrieve keyboard (IME) insets
+                        Insets imeInsets = windowInsets.getInsets(WindowInsetsCompat.Type.ime());
+                        boolean keyboardVisible = windowInsets.isVisible(WindowInsetsCompat.Type.ime());
+
+                        ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+
+                        // Apply the appropriate bottom inset: use keyboard inset if visible, else system bars inset
+                        mlp.bottomMargin = keyboardVisible ? imeInsets.bottom : systemBarsInsets.bottom;
+                        mlp.topMargin = 0;
+
+                        v.setLayoutParams(mlp);
+
+                        return WindowInsetsCompat.CONSUMED;
+                    }
+                );
+            });
+    }
+
+    @PluginMethod
+    public void adjustPaddingForNavigationBar(PluginCall call) {
+        applyInsets();
+        call.resolve();
     }
 }

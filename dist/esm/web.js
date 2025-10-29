@@ -29,5 +29,10 @@ export class NavigationBarWeb extends WebPlugin {
             resolve({ color: '#FFFFFF' });
         });
     }
+    async adjustPaddingForNavigationBar() {
+        return new Promise((resolve) => {
+            resolve({});
+        });
+    }
 }
 //# sourceMappingURL=web.js.map
